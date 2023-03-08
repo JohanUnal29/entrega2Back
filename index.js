@@ -17,9 +17,6 @@ const env = async () => {
 
   await manager.crearProducto(producto);
 
-  let segundaConsulta = await manager.consultarProductos();
-  console.log(segundaConsulta);
-
   const changes = {
     title: "cambie el titulo xd",
     price: 100000,
@@ -34,11 +31,8 @@ const env = async () => {
   let cuartaConsulta = await manager.getProductElementById(1);
   console.log(cuartaConsulta);
 
-  let quintaConsulta = await manager.deletProduct(2);
+  let quintaConsulta = await manager.deletProduct(5);
   console.log(quintaConsulta);
-
-
-
 
 
 };
