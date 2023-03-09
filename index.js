@@ -31,7 +31,7 @@ const env = async () => {
   let cuartaConsulta = await manager.getProductElementById(1);
   console.log(cuartaConsulta);
 
-  let quintaConsulta = await manager.deletProduct(5);
+  let quintaConsulta = await manager.deletProduct(3);
   console.log(quintaConsulta);
 
 

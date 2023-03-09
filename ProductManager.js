@@ -1,5 +1,4 @@
 import fs from "fs";
-import { title } from "process";
 
 export default class ProductManager {
   constructor() {
@@ -17,21 +16,21 @@ export default class ProductManager {
 
     deletProduct = async (id) => {
         const products = await this.consultarProductos();
-
-        const productIndex = this.products.findIndex((product) => product.id === id);
-        const productExists = products.find(element => element.id === id);
-
-        if (productExists) {
-            products.splice(productIndex, 1);
-            console.log("producto eliminado");
-            await fs.promises.writeFile(this.path, JSON.stringify(products, null, "\t"));
-            return products;
-
+      
+        const productIndex = products.findIndex((product) => product.id === id);
+      
+        if (productIndex !== -1) {
+          products.splice(productIndex, 1);
+          console.log("producto eliminado");
+          await fs.promises.writeFile(this.path, JSON.stringify(products, null, "\t"));
+          return products;
+      
         } else {
-            return console.log("No se pudo eliminar el producto")
+          console.log("No se pudo eliminar el producto");
+          return null;
         }
-
-    };
+      };
+      
 
     getProductElementById = async (id) =>{
         const products = await this.consultarProductos();
@@ -46,29 +45,30 @@ export default class ProductManager {
     };
 
     crearProducto = async (producto) => {
-
         const productos = await this.consultarProductos();
         const productExists = productos.find(element => element.code === producto.code);
+      
         if (producto.title.length === 0 || producto.description.length === 0 || producto.price.length === 0 || producto.thumbnail.length === 0 || producto.code.length === 0 || producto.stock.length === 0) {
-            return console.log("Hay un campo vacío");
+          return { success: false, error: console.log("Hay un campo vacío") };
         } else {
-
-            if (productExists) {
-                return console.log("El producto ya existe acá esta:", productExists);;
+          if (productExists) {
+            return { success: false, error: console.log("El producto ya existe") };
+          } else {
+            if (productos.length === 0) {
+              producto.id = 1;
             } else {
-                if (productos.length === 0) {
-                    producto.id = 1;
-                } else {
-                    producto.id = productos[productos.length - 1].id + 1;
-                }
-                productos.push(producto);
-                await fs.promises.writeFile(
-                    this.path,
-                    JSON.stringify(productos, null, "\t")
-                );
+              producto.id = productos[productos.length - 1].id + 1;
             }
+            productos.push(producto);
+            await fs.promises.writeFile(
+              this.path,
+              JSON.stringify(productos, null, "\t")
+            );
+            return { success: true };
+          }
         }
-    };
+      };
+      
 
 
 
