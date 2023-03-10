@@ -48,7 +48,7 @@ export default class ProductManager {
         const productos = await this.consultarProductos();
         const productExists = productos.find(element => element.code === producto.code);
       
-        if (producto.title.length === 0 || producto.description.length === 0 || producto.price.length === 0 || producto.thumbnail.length === 0 || producto.code.length === 0 || producto.stock.length === 0) {
+        if (!producto.title || !producto.description || !producto.price || !producto.thumbnail || !producto.code || !producto.stock) {
           return { success: false, error: console.log("Hay un campo vacío") };
         } else {
           if (productExists) {
